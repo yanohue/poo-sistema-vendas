@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Usuário\\Documents\\GitHub\\poo-sistema-vendas\\app\\app.csproj": {}
+    "C:\\Users\\Usuário\\Documents\\GitHub\\poo-sistema-vendas\\Store\\Store.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Usuário\\Documents\\GitHub\\poo-sistema-vendas\\app\\app.csproj": {
+    "C:\\Users\\Usuário\\Documents\\GitHub\\poo-sistema-vendas\\Store\\Store.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Usuário\\Documents\\GitHub\\poo-sistema-vendas\\app\\app.csproj",
-        "projectName": "app",
-        "projectPath": "C:\\Users\\Usuário\\Documents\\GitHub\\poo-sistema-vendas\\app\\app.csproj",
+        "projectUniqueName": "C:\\Users\\Usuário\\Documents\\GitHub\\poo-sistema-vendas\\Store\\Store.csproj",
+        "projectName": "Store",
+        "projectPath": "C:\\Users\\Usuário\\Documents\\GitHub\\poo-sistema-vendas\\Store\\Store.csproj",
         "packagesPath": "C:\\Users\\Usuário\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Usuário\\Documents\\GitHub\\poo-sistema-vendas\\app\\obj\\",
+        "outputPath": "C:\\Users\\Usuário\\Documents\\GitHub\\poo-sistema-vendas\\Store\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Usuário\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -37,6 +37,16 @@
       "frameworks": {
         "net7.0": {
           "targetAlias": "net7.0",
+          "dependencies": {
+            "ConsoleTables": {
+              "target": "Package",
+              "version": "[2.4.2, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
