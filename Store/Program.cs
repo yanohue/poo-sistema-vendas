@@ -11,7 +11,7 @@ namespace Store
             Store store = new Store();
             store.loadData();
 
-            int option;
+            string option;
             do
             {
 
@@ -24,27 +24,27 @@ namespace Store
                 Console.WriteLine("4 - Financeiro");
                 Console.WriteLine("0 - Sair");
 
-                int.TryParse(Console.ReadLine(), out option);
+                option = store.NullString(Console.ReadLine());
                 
                 switch (option)
                 {
-                    case 1:
+                    case "1":
                         store.registerToDatase(store);
                         break;
 
-                    case 2:
+                    case "2":
                         store.queryToDatabase(store);
                         break;
 
-                    case 3:
+                    case "3":
                         // Continue here
                         break;
 
-                    case 4:
+                    case "4":
                         
                         break;
 
-                    case 0:
+                    case "0":
                         Console.WriteLine("Salvando informações...");
 
                         Employee.saveData(store);
@@ -54,13 +54,12 @@ namespace Store
 
                         Console.WriteLine("Encerrando o sistema...");
                         break;
-                        
                     default:
                         Console.WriteLine("Opção inválida! Pressione qualquer tecla para continuar...");
                         Console.ReadKey();
                         break;
                 }
-            } while(option != 0);
+            } while(option != "0");
         }
     }
 }

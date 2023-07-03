@@ -43,7 +43,7 @@ namespace Store
 
 		public void registerToDatase(Store store)
         {
-            int option;
+            string option;
             do
             {
                 Console.Clear();
@@ -54,27 +54,27 @@ namespace Store
                 Console.WriteLine("4 - Produto");
                 Console.WriteLine("0 - Sair");
 
-                int.TryParse(Console.ReadLine(), out option);
+                option = NullString(Console.ReadLine());
                 switch (option)
                 {
-                    case 1:
+                    case "1":
                         Employee.collectData(store);
                         break;
 
-                    case 2:
+                    case "2":
                         Client.collectData(store);
                         break;
 
-                    case 3:
+                    case "3":
                         CashRegister.collectData(store);
                         break;
 
-                    case 4:
+                    case "4":
                         Product.collectData(store);
                         break;
 
-                    case 0:
-                        Console.WriteLine("Voltanto a tela anterior...");
+                    case "0":
+                        Console.WriteLine("Voltando a tela anterior...");
                         break;
 
                     default:
@@ -82,12 +82,12 @@ namespace Store
                         Console.ReadKey();
                         break;
                 }
-            } while(option != 0); 
+            } while(option != "0"); 
         }
 
 		public void queryToDatabase(Store store)
         {
-            int option;
+            string option;
             do
             {
                 Console.Clear();
@@ -98,26 +98,26 @@ namespace Store
                 Console.WriteLine("4 - Produto");
                 Console.WriteLine("0 - Sair");
 
-                int.TryParse(Console.ReadLine(), out option);
+                option = NullString(Console.ReadLine());
                 switch (option)
                 {
-                    case 1:
+                    case "1":
                         Employee.listData(store);
                         break;
 
-                    case 2:
+                    case "2":
                         Client.listData(store);
                         break;
 
-                    case 3:
+                    case "3":
                         CashRegister.listData(store);
                         break;
 
-                    case 4:
+                    case "4":
                         Product.listData(store);
                         break;
 
-                    case 0:
+                    case "0":
                         Console.WriteLine("Voltando a pagina anterior...");
                         break;
 
@@ -126,14 +126,14 @@ namespace Store
                         Console.ReadKey();
                         break;
                 }
-            } while(option != 0); 
+            } while(option != "0"); 
         }
         
         public string NullString(string? s){
         	if(s == null){
-            	throw new ArgumentNullException(paramName: nameof(s), message: "Esse campo não pode ser nulo");
+            	throw new ArgumentNullException(paramName: nameof(s), message: "[Error] This field can't be null");
             }else if(s == ""){
-            	throw new ArgumentNullException(paramName: nameof(s), message: "Esse campo não pode ser nulo");
+            	throw new ArgumentNullException(paramName: nameof(s), message: "[Error] This field can't be null");
             }
             else{
             	return s;
