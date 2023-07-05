@@ -1,1 +1,56 @@
-[]
+[
+  {
+    "ID": 1,
+    "Checkout": {
+      "ID": 2,
+      "Balance": 11000.0
+    },
+    "Cashier": {
+      "ID": 1,
+      "Role": "Atendente",
+      "Name": "Yano",
+      "CPF": "12345678900"
+    },
+    "Customer": {
+      "ID": 1,
+      "Phone": "98877665544",
+      "Name": "Jefferson",
+      "CPF": "11122233344"
+    },
+    "Items": [
+      {
+        "ID": 2,
+        "Name": "MacBook Air",
+        "Price": 10500.0
+      }
+    ],
+    "Total": 10500.0
+  },
+  {
+    "ID": 2,
+    "Checkout": {
+      "ID": 1,
+      "Balance": 6600.0
+    },
+    "Cashier": {
+      "ID": 2,
+      "Role": "Atendente",
+      "Name": "Zabandzala",
+      "CPF": "11111111111"
+    },
+    "Customer": {
+      "ID": 2,
+      "Phone": "080008000",
+      "Name": "Celso",
+      "CPF": "10120230344"
+    },
+    "Items": [
+      {
+        "ID": 1,
+        "Name": "iPhone 14",
+        "Price": 6300.0
+      }
+    ],
+    "Total": 6300.0
+  }
+]

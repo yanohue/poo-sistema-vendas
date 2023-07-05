@@ -50,51 +50,59 @@ namespace Store
                 });
 
                 Purchase newPurchase = new Purchase(store.purchases.Count + 1, activeCashRegister, activeEmployee, activeClient, purchaseItems, purchaseTotal);
-                
 
-                bool isPaid = false;
-                Payment paymentResult;
-                do
+                Payment paymentMethod = GetPaymentMethod();
+    
+                if (paymentMethod is CashPayment cashPayment)
                 {
-                    float payment;
-                    Console.WriteLine("Valor recebido: ");
-                    float.TryParse(Console.ReadLine(), out payment);
-                    paymentResult = new Payment(newPurchase.Total, payment);
+                    bool isPaid = CashPayment.processPayment(store, newPurchase);
 
-                    isPaid = paymentResult.status;
-                    if(!isPaid)
+                    if (isPaid)
                     {
-                        Console.WriteLine("Desistir? (s/n)");  
-                        string c = store.NullString(Console.ReadLine());
-                        if(c == "s")
-                        {
-                            break;
-                        }
+                        store.purchases.Add(newPurchase);
+                        activeCashRegister.Balance += purchaseTotal;
+                        JsonFileUtils.writeToJson(store.cashRegisters, "json/cashRegisters.json");
+                        JsonFileUtils.writeToJson(store.purchases, "json/purchases.json");
                     }
-                } while(!isPaid);
-
-                if(isPaid)
-                {
-                    // some code here
-                    if(paymentResult.change > 0)
-                    {
-                        Console.WriteLine("Troco: " + paymentResult.change);
-                        Console.ReadKey();
-                    }
-                    Console.WriteLine("Compra realizada com sucesso!");
-                    Console.ReadKey();
-                    store.purchases.Add(newPurchase);
-
-                    activeCashRegister.Balance += purchaseTotal;
-
-                    JsonFileUtils.writeToJson(store.cashRegisters, "json/cashRegisters.json");
-                    JsonFileUtils.writeToJson(store.purchases, "json/purchases.json");
                 }
+                else if (paymentMethod is CreditCardPayment creditCardPayment)
+                {
+                    bool isPaid = CreditCardPayment.processPayment(store, newPurchase);
 
+                    if (isPaid)
+                    {
+                        store.purchases.Add(newPurchase);
+                        activeCashRegister.Balance += purchaseTotal;
+                        JsonFileUtils.writeToJson(store.cashRegisters, "json/cashRegisters.json");
+                        JsonFileUtils.writeToJson(store.purchases, "json/purchases.json");
+                    }
+                }
+                else
+                {
+                    throw new ArgumentException("Método de pagamento inválido.");
+                }
             }
             catch(Exception e)
             {
                 throw new ArgumentException($"[Error] Collect purchase data: {e}");
+            }
+        }
+
+        private static Payment GetPaymentMethod()
+        {
+            Console.WriteLine("Selecione o método de pagamento:");
+            Console.WriteLine("1. Dinheiro");
+            Console.WriteLine("2. Cartão de crédito");
+            int option = int.Parse(Console.ReadLine());
+
+            switch (option)
+            {
+                case 1:
+                    return new CashPayment();
+                case 2:
+                    return new CreditCardPayment();
+                default:
+                    throw new ArgumentException("Opção de pagamento inválida.");
             }
         }
 
