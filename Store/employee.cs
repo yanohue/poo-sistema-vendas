@@ -4,12 +4,14 @@ using ConsoleTables;
 
 namespace Store
 {
-    public class Employee : Person
+    public class Employee : Person,IDataControl
     {   
+        public int ID {get; set;}
         public string Role {get; set;}
 
-        public Employee(string name, string cpf, string role) :base(name,cpf)
+        public Employee(int id, string name, string cpf, string role) :base(name,cpf)
         {
+            ID = id;
             Name = name;
             CPF = cpf;
             Role = role;
@@ -31,10 +33,10 @@ namespace Store
                 Console.Write("Função: ");
                 string employeeRole = store.NullString(Console.ReadLine());
 
-                Employee newEmployee = new Employee(employeeName, employeeCPF, employeeRole);
+                Employee newEmployee = new Employee(store.employees.Count + 1, employeeName, employeeCPF, employeeRole);
                 store.employees.Add(newEmployee);
 
-                Employee.saveData(store);
+                JsonFileUtils.writeToJson(store.employees, "json/employees.json");
             }
             catch(Exception e)
             {
@@ -43,21 +45,26 @@ namespace Store
 
         }
 
-        public static new void saveData(Store store)
-        {
-            File.WriteAllText("json/employees.json", JsonConvert.SerializeObject(store.employees));
-        }
-
         public static void listData(Store store)
         {
-            var table = new ConsoleTable("Nome","CPF","Cargo"); 
-            Console.Clear();
+            Console.WriteLine("== FUNCIONÁRIOS DISPONÍVEIS ==");
+            var table = new ConsoleTable("ID","Nome","CPF","Cargo"); 
             store.employees.ForEach(employee => {
-                table.AddRow(employee.Name, employee.CPF, employee.Role);
+                table.AddRow(employee.ID, employee.Name, employee.CPF, employee.Role);
             });
             table.Write();
-            Console.ReadLine();
         }
 
+        public static Employee findByID(Store store)
+        {
+            Console.Clear();
+
+            Employee.listData(store);
+            Console.WriteLine("Selecione funcionário pela ID: ");
+            int.TryParse(Console.ReadLine(), out int employeeID);
+            Employee matchedEmployee = store.employees.Find(e => e.ID == employeeID);
+
+            return matchedEmployee;
+        }
     }
 }

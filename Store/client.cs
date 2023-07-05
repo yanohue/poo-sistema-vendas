@@ -1,15 +1,16 @@
 using System;
-using Newtonsoft.Json;
 using ConsoleTables;
 
 namespace Store
 {
-    public class Client : Person
+    public class Client : Person,IDataControl
     {
+        public int ID {get; set;}
         public string Phone {get; set;}
 
-        public Client(string name, string cpf, string phone) :base(name,cpf)
+        public Client(int id, string name, string cpf, string phone) :base(name,cpf)
         {
+            ID = id;
             Phone = phone;
         }
 
@@ -29,10 +30,10 @@ namespace Store
                 Console.Write("Telefone: ");
                 string clientPhone = store.NullString(Console.ReadLine());
 
-                Client newClient = new Client(clientName, clientCPF, clientPhone);
+                Client newClient = new Client(store.clients.Count + 1, clientName, clientCPF, clientPhone);
                 store.clients.Add(newClient);
 
-                Client.saveData(store); 
+                JsonFileUtils.writeToJson(store.clients, "json/clients.json");
             } 
             catch(Exception e)
             {
@@ -40,20 +41,24 @@ namespace Store
             }         
         }
 
-        public static new void saveData(Store store)
-        {
-            File.WriteAllText("json/clients.json", JsonConvert.SerializeObject(store.clients));
-        }
-
         public static void listData(Store store)
         {
-            var table = new ConsoleTable("Nome","CPF","Telefone"); 
-            Console.Clear();
+            Console.WriteLine("== Clientes DISPONÍVEIS ==");
+            var table = new ConsoleTable("ID","Nome","CPF","Telefone"); 
             store.clients.ForEach(client => {
-                table.AddRow(client.Name, client.CPF, client.Phone);
+                table.AddRow(client.ID, client.Name, client.CPF, client.Phone);
             });
             table.Write();
-            Console.ReadLine();
+        }
+    
+        public static Client findByID(Store store)
+        {
+            Console.Clear();
+            Client.listData(store);
+            Console.WriteLine("Selecione cliente pela ID: ");
+            int.TryParse(Console.ReadLine(), out int clientID);
+            Client matchedClient = store.clients.Find(c => c.ID == clientID);
+            return matchedClient;         
         }
     }
 }

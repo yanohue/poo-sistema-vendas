@@ -4,7 +4,7 @@ using ConsoleTables;
 
 namespace Store
 {
-    public class Product : saveInterface
+    public class Product : IDataControl
     {
         public int ID {get; set;}
         public string Name {get; set;}
@@ -12,7 +12,7 @@ namespace Store
 
         public Product(int id, string name, float price)
         {
-            ID = ID;
+            ID = id;
             Name = name;
             Price = price;
         }
@@ -24,9 +24,9 @@ namespace Store
                 Console.Clear();
                 Console.WriteLine("Cadastro de Produto:");
 
-                Console.Write("ID do produto: ");
+                /* Console.Write("ID do produto: ");
                 int productID; 
-                int.TryParse(Console.ReadLine(), out productID);
+                int.TryParse(Console.ReadLine(), out productID); */
 
                 Console.Write("Nome do produto: ");
                 string productName = store.NullString(Console.ReadLine());
@@ -35,10 +35,10 @@ namespace Store
                 float productPrice;
                 float.TryParse(Console.ReadLine(), out productPrice);
 
-                Product newProduct = new Product(productID, productName, productPrice);
+                Product newProduct = new Product(store.products.Count + 1, productName, productPrice);
                 store.products.Add(newProduct);
 
-                Product.saveData(store);
+                JsonFileUtils.writeToJson(store.products, "json/products.json");
             }
             catch(Exception e)
             {
@@ -47,20 +47,25 @@ namespace Store
            
         }
 
-        public static void saveData(Store store)
-        {
-            File.WriteAllText("json/products.json", JsonConvert.SerializeObject(store.products));
-        }
-
         public static void listData(Store store)
         {
+            Console.WriteLine("== PRODUTOS DISPONÍVEIS ==");            
             var table = new ConsoleTable("ID","Nome","Preço"); 
-            Console.Clear();
             store.products.ForEach(product => {
                 table.AddRow(product.ID, product.Name, product.Price);
             });
             table.Write();
-            Console.ReadLine();
+        }
+
+        public static Product findByID(Store store)
+        {
+            Console.Clear();
+            Product.listData(store);
+            Console.WriteLine("Selecione produto pela ID: ");
+            int.TryParse(Console.ReadLine(), out int productID);
+            Product matchedProduct = store.products.Find(p => p.ID == productID);
+
+            return matchedProduct; 
         }
     }
 }

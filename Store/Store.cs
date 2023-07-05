@@ -5,10 +5,58 @@ namespace Store
 {
     public class Store
     {
-        public List<Client> clients = new List<Client>();
-        public List<Employee> employees = new List<Employee>();
-        public List<CashRegister> cashRegisters = new List<CashRegister>();
-		public List<Product> products = new List<Product>();
+        public List<Client> clients {get; set; }
+        public List<Employee> employees {get; set; }
+        public List<CashRegister> cashRegisters {get; set; }
+		public List<Product> products {get; set; }
+        public List<Purchase> purchases {get; set; }
+
+        public Store()
+        {
+            clients = new List<Client>();
+            employees = new List<Employee>();
+            cashRegisters = new List<CashRegister>();
+            products = new List<Product>();
+            purchases = new List<Purchase>();
+        }
+
+        public void shop(Store store)
+        {
+            Employee activeEmployee = Employee.findByID(store);
+            CashRegister activeCashRegister = CashRegister.findByID(store);
+
+            string option;
+            do
+            {                
+                Console.Clear();
+                Console.WriteLine("Compras: ");
+                Console.WriteLine("Selecione uma opção:");
+                Console.WriteLine("1 - Iniciar compra");
+                Console.WriteLine("2 - Consulta");
+                Console.WriteLine("0 - Sair");
+
+                option = NullString(Console.ReadLine());
+                switch (option)
+                {
+                    case "1":
+                        Purchase.collectData(store, activeEmployee, activeCashRegister);
+                        break;
+                    case "2":
+                        Console.Clear();
+                        Purchase.listData(store);
+                        Console.ReadLine();
+                        break;
+                    case "0":
+                        Console.WriteLine("Fechando caixa...");
+                        break;
+                    default:
+                        Console.WriteLine("Opção inválida! Pressione qualquer tecla para continuar...");
+                        Console.ReadKey();
+                        break;
+                }
+            } while(option != "0");
+
+        }
 
 		public void loadData()
 		{   
@@ -25,7 +73,7 @@ namespace Store
                     employees = JsonConvert.DeserializeObject<List<Employee>>(File.ReadAllText("json/employees.json"));				
                 }
 
-                if (File.Exists("json/cashRegiters.json"))
+                if (File.Exists("json/cashRegisters.json"))
                 {
                     cashRegisters = JsonConvert.DeserializeObject<List<CashRegister>>(File.ReadAllText("json/cashRegisters.json"));				
                 }
@@ -33,6 +81,11 @@ namespace Store
                 if (File.Exists("json/products.json"))
                 {
                     products = JsonConvert.DeserializeObject<List<Product>>(File.ReadAllText("json/products.json"));				
+                }
+
+                if(File.Exists("json/purchases.json"))
+                {
+                    purchases = JsonConvert.DeserializeObject<List<Purchase>>(File.ReadAllText("json/purchases.json"));
                 }
             }
             catch(Exception e)
@@ -102,19 +155,27 @@ namespace Store
                 switch (option)
                 {
                     case "1":
+                        Console.Clear();
                         Employee.listData(store);
+                        Console.ReadLine();
                         break;
 
                     case "2":
+                        Console.Clear();
                         Client.listData(store);
+                        Console.ReadLine();
                         break;
 
                     case "3":
+                        Console.Clear();
                         CashRegister.listData(store);
+                        Console.ReadLine();
                         break;
 
                     case "4":
+                        Console.Clear();
                         Product.listData(store);
+                        Console.ReadLine();
                         break;
 
                     case "0":

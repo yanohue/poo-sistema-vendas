@@ -2,7 +2,7 @@ using System;
 
 namespace Store
 {
-    public abstract class Person : saveInterface
+    public abstract class Person : IDataControl
     {
         public string Name {get; protected set;}
         public string CPF {get; protected set;}

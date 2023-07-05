@@ -1,1 +1,14 @@
-[{"Role":"1","Name":"a","CPF":"1"}]
+[
+  {
+    "ID": 1,
+    "Role": "Atendente",
+    "Name": "Yano",
+    "CPF": "12345678900"
+  },
+  {
+    "ID": 2,
+    "Role": "Atendente",
+    "Name": "Zabandzala",
+    "CPF": "11111111111"
+  }
+]

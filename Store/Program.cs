@@ -14,18 +14,16 @@ namespace Store
             string option;
             do
             {
-
                 Console.Clear();
                 Console.WriteLine("Bem-vindo à Loja");
                 Console.WriteLine("Selecione uma opção:");
                 Console.WriteLine("1 - Cadastro");
                 Console.WriteLine("2 - Consulta");
                 Console.WriteLine("3 - Venda");
-                Console.WriteLine("4 - Financeiro");
                 Console.WriteLine("0 - Sair");
 
                 option = store.NullString(Console.ReadLine());
-                
+
                 switch (option)
                 {
                     case "1":
@@ -37,23 +35,18 @@ namespace Store
                         break;
 
                     case "3":
-                        // Continue here
-                        break;
-
-                    case "4":
-                        
+                        store.shop(store);
                         break;
 
                     case "0":
-                        Console.WriteLine("Salvando informações...");
-
-                        Employee.saveData(store);
-                        Client.saveData(store);
-                        Product.saveData(store);
-                        CashRegister.saveData(store);
-
                         Console.WriteLine("Encerrando o sistema...");
+                        JsonFileUtils.writeToJson(store.employees, "json/employees.json");
+                        JsonFileUtils.writeToJson(store.clients, "json/clients.json");
+                        JsonFileUtils.writeToJson(store.cashRegisters, "json/cashRegisters.json");
+                        JsonFileUtils.writeToJson(store.products, "json/products.json");
+                        JsonFileUtils.writeToJson(store.purchases, "json/purchases.json");
                         break;
+
                     default:
                         Console.WriteLine("Opção inválida! Pressione qualquer tecla para continuar...");
                         Console.ReadKey();

@@ -4,10 +4,17 @@ using ConsoleTables;
 
 namespace Store
 {
-    public class CashRegister : saveInterface
+    public class CashRegister : IDataControl
     {
         public int ID {get; set;}
-        public float balance {get; set;}
+        public float Balance {get; set;}
+
+        public CashRegister(int id, float balance)
+        {
+            ID = id;
+            Balance = balance;
+        }
+        
 
         public static void collectData(Store store)
         {
@@ -16,18 +23,20 @@ namespace Store
                 Console.Clear();
                 Console.WriteLine("Cadastro de Caixa:");
 
-                Console.Write("ID do caixa: ");
+                /* Console.Write("ID do caixa: ");
                 int cashRegisterID; 
-                int.TryParse(Console.ReadLine(), out cashRegisterID);
+                int.TryParse(Console.ReadLine(), out cashRegisterID); */
 
                 Console.Write("Saldo: ");
                 float balanceCR;
-                float.TryParse(Console.ReadLine(), out balanceCR);
-
-                CashRegister newCashRegister = new CashRegister {ID = cashRegisterID, balance = balanceCR};
+                if(!float.TryParse(Console.ReadLine(), out balanceCR))
+                {
+                    Console.WriteLine("Not a valid float");
+                }
+                CashRegister newCashRegister = new CashRegister(store.cashRegisters.Count + 1, balanceCR);
                 store.cashRegisters.Add(newCashRegister);
 
-                CashRegister.saveData(store);
+                JsonFileUtils.writeToJson(store.cashRegisters, "json/cashRegisters.json");
             } 
             catch(Exception e)
             {
@@ -35,20 +44,25 @@ namespace Store
             } 
         }
 
-        public static void saveData(Store store)
-        {
-            File.WriteAllText("json/cashRegisters.json", JsonConvert.SerializeObject(store.cashRegisters));
-        }
-
         public static void listData(Store store)
         {
+            Console.WriteLine("== CAIXAS DISPONÍVEIS ==");
             var table = new ConsoleTable("ID","Saldo"); 
-            Console.Clear();
             store.cashRegisters.ForEach(cashRegister => {
-                table.AddRow(cashRegister.ID, cashRegister.balance);
+                table.AddRow(cashRegister.ID, cashRegister.Balance);
             });
             table.Write();
-            Console.ReadLine();
+        }
+ 
+        public static CashRegister findByID(Store store)
+        {
+            Console.Clear();
+            CashRegister.listData(store);
+            Console.WriteLine("Selecione caixa pela ID: ");
+            int.TryParse(Console.ReadLine(), out int cashRegisterID);
+            CashRegister matchedCashRegister = store.cashRegisters.Find(cr => cr.ID == cashRegisterID);
+
+            return matchedCashRegister;
         }
     }
 }

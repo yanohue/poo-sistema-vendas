@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "ID": 1,
+    "Name": "iPhone 14",
+    "Price": 6300.0
+  },
+  {
+    "ID": 2,
+    "Name": "MacBook Air",
+    "Price": 10500.0
+  }
+]
